@@ -15,7 +15,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.algaworks.socialbooks.domain.Livro;
 import com.algaworks.socialbooks.services.LivrosService;
-import com.algaworks.socialbooks.services.exceptions.LivroNaoEncontradoException;
 
 @RestController /*Defino que é um recurso para o Spring*/
 @RequestMapping(value = "/livros") //Mapeando a partir daqui...
