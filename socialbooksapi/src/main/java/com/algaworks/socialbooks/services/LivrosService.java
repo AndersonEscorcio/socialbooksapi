@@ -1,0 +1,59 @@
+package com.algaworks.socialbooks.services;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Service;
+
+import com.algaworks.socialbooks.domain.Livro;
+import com.algaworks.socialbooks.repository.LivrosRepository;
+import com.algaworks.socialbooks.services.exceptions.LivroNaoEncontradoException;
+
+@Service
+public class LivrosService {
+	
+	@Autowired
+	private LivrosRepository LivrosRepository; //Camada de acesso a dados
+	
+	public List<Livro> listar(){
+	
+		return LivrosRepository.findAll();
+	}
+	
+	public Livro buscar(Long id) {
+		
+		Livro livro = LivrosRepository.findOne(id);
+		if(livro == null) {
+			throw new LivroNaoEncontradoException("O livro não pode ser encontrado.");
+		}
+		return livro;
+	}
+	
+	public Livro salvar(Livro livro) {
+		
+		livro.setId(null);
+		return LivrosRepository.save(livro);
+	}
+	
+	public void deletar(Long id) {
+		
+		try {
+			LivrosRepository.delete(id);	
+		} catch (EmptyResultDataAccessException e) {
+			throw new LivroNaoEncontradoException("O livro não pode ser encontrado.");
+		}
+		
+	}
+	
+	public void atualizar(Livro livro) {
+		
+		verificarExistencia(livro);
+		LivrosRepository.save(livro);
+	}
+	
+	private void verificarExistencia(Livro livro) {
+		
+		buscar(livro.getId());
+	}
+}
