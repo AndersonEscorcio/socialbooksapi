@@ -68,34 +68,20 @@ public class LivrosResources {
 			return ResponseEntity.notFound().build(); //Não encontrou (404)
 		}
 		*/
-		Livro livro = null;
-		try {
-			livro = LivrosService.buscar(id);
-		} catch (LivroNaoEncontradoException e) {
-			ResponseEntity.notFound().build();
-		}
+		Livro livro = LivrosService.buscar(id);		
 		return ResponseEntity.status(HttpStatus.OK).body(livro); //Encontrou(200 OK)
 		
 	}
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)/*Mapeando URI para um determinado method(DELETE)*/
 	public ResponseEntity<Void> deletar(@PathVariable("id") Long id) {
-		
-		try {
-			LivrosService.deletar(id);
-		} catch (LivroNaoEncontradoException e) {
-			return ResponseEntity.notFound().build();
-		}
+		LivrosService.deletar(id);
 		return ResponseEntity.noContent().build();
+				
 	}
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)/*Mapeando URI para um determinado method(PUT)*/
 	public ResponseEntity<Void> atualizar(@RequestBody Livro livro,@PathVariable("id") Long id) {
 		livro.setId(id); //aponto livro que será atualizado
-		try {
-			LivrosService.atualizar(livro);
-		} catch (LivroNaoEncontradoException e) {
-			ResponseEntity.notFound().build();
-		}
-		
+		LivrosService.atualizar(livro);		
 		return ResponseEntity.noContent().build();
 	}
 }
