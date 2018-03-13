@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.algaworks.socialbooks.domain.Livro;
+import com.algaworks.socialbooks.domain.comentario;
 import com.algaworks.socialbooks.services.LivrosService;
 
 @RestController /*Defino que é um recurso para o Spring*/
@@ -83,4 +84,14 @@ public class LivrosResources {
 		LivrosService.atualizar(livro);		
 		return ResponseEntity.noContent().build();
 	}
+	@RequestMapping(value = "/{id}/comentarios", method = RequestMethod.POST)
+	public ResponseEntity<Void> adicionarComentario(@PathVariable("id") long livroId, @RequestBody comentario comentario) {
+		LivrosService.salvarComentario(livroId, comentario);
+		
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri(); 
+		
+		return ResponseEntity.created(uri).build();
+				
+	}
+	
 }
