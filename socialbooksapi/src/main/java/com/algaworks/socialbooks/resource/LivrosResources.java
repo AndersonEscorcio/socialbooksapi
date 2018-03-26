@@ -3,6 +3,8 @@ package com.algaworks.socialbooks.resource;
 import java.net.URI;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,7 +51,7 @@ public class LivrosResources {
 	}
 	//Criando método "criação"
 	@RequestMapping(method = RequestMethod.POST)/*Mapeando URI para um determinado method(POST)*/
-	public ResponseEntity<Void> salvar(@RequestBody Livro livro) {
+	public ResponseEntity<Void> salvar(@Valid @RequestBody Livro livro) {
 	
 		//livro = LivrosRepository.save(livro);
 		livro = LivrosService.salvar(livro);
@@ -94,4 +96,11 @@ public class LivrosResources {
 				
 	}
 	
+	@RequestMapping(value = "/{id}/comentarios", method = RequestMethod.GET)
+	public ResponseEntity<List<comentario>> listarComentarios(
+			@PathVariable("id")Long livroId){
+		List<comentario> comentarios = LivrosService.listarComentario(livroId);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(comentarios);
+	}
 }
